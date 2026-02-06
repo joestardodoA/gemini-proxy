@@ -1,13 +1,13 @@
-export const config = {
-  runtime: 'edge', // 告诉 Vercel 使用边缘节点（速度最快）
-};
+export const config = { runtime: 'edge' };
 
 export default async function (request) {
   const url = new URL(request.url);
   
-  // 核心操作：把请求目的地偷梁换柱改成 Google
+  // 🎯 强制锁定：无论请求什么，都精准导向 Google 的最新模型接口
+  url.protocol = "https:";
   url.hostname = 'generativelanguage.googleapis.com';
-
-  // 发送请求，Vercel 会自动处理美国 IP 问题
+  url.pathname = '/v1beta/models/gemini-2.5-flash:generateContent';
+  
+  // 发射请求！
   return fetch(url, request);
 }
